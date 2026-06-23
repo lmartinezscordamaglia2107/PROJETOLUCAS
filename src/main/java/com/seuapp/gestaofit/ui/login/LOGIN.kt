@@ -45,7 +45,7 @@ class LOGIN : AppCompatActivity() {
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
-        loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
+        loginViewModel.loginFormState.observe(this, Observer {
             val loginState = it ?: return@Observer
 
             // disable login button unless both username / password is valid
@@ -59,7 +59,7 @@ class LOGIN : AppCompatActivity() {
             }
         })
 
-        loginViewModel.loginResult.observe(this@LoginActivity, Observer {
+        loginViewModel.loginResult.observe(this, Observer {
             val loginResult = it ?: return@Observer
 
             loading.visibility = View.GONE
@@ -71,7 +71,9 @@ class LOGIN : AppCompatActivity() {
             }
             setResult(Activity.RESULT_OK)
 
-            //Complete and destroy login activity once successful
+            // Após login com sucesso, abre a MainActivity (Dashboard)
+            val intent = android.content.Intent(this, com.seuapp.gestaofit.MainActivity::class.java)
+            startActivity(intent)
             finish()
         })
 
