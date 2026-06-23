@@ -1,0 +1,137 @@
+package com.exemplo.ecommerce.presentation.view
+
+import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.exemplo.ecommerce.data.local.AppDatabase
+import com.exemplo.ecommerce.data.repository.ProductRepositoryImpl
+import com.exemplo.ecommerce.databinding.ActivityMainBinding
+import com.exemplo.ecommerce.domain.model.Product
+import com.exemplo.ecommerce.presentation.viewmodel.ProductViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+
+val android: Any
+
+class MainActivity : AppCompatActivity() {
+
+    private var _binding: ActivityMainBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var viewModel: ProductViewModel
+    private lateinit var adapter: ProductAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        setupViewModel()
+        setupRecyclerView()
+        observeUiState()
+        setupListeners()
+    }
+
+    private fun setupViewModel() {
+        try {
+            val database = AppDatabase.getDatabase(applicationContext)
+            val repository = ProductRepositoryImpl(database.productDao())
+
+            viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+                @Suppress("UNCHECKED_CAST")
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return ProductViewModel(repository) as T
+                }
+            })[ProductViewModel::class.java]
+        } catch (e: Exception) {
+            Toast.makeText(this, "Erro ao inicializar banco de dados: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun setupRecyclerView() {
+        adapter = ProductAdapter(
+            onEditClick = { product ->
+                executarFluxoAtualizacao(product)
+            },
+            onDeleteClick = { product ->
+                executarFluxoRemocao(product)
+            }
+        )
+
+        binding.recyclerViewProducts.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = this@MainActivity.adapter
+            setHasFixedSize(true)
+        }
+    }
+
+    private fun observeUiState() {
+        lifecycleScope.launch {
+            viewModel.products.collectLatest { productList ->
+                adapter.submitList(productList)
+            }
+        }
+    }
+
+    private fun setupListeners() {
+        binding.buttonAddProduct.setOnClickListener {
+            val name = binding.editTextProductName.text.toString().trim()
+            val description = binding.editTextProductDesc.text.toString().trim()
+            val priceText = binding.editTextProductPrice.text.toString().trim()
+
+            if (validarCampos(name, priceText)) {
+                val price = priceText.toDoubleOrNull() ?: 0.0
+                val defaultImageUrl = "https://via.placeholder.com/150"
+
+                viewModel.addProduct(name, description, price, defaultImageUrl)
+                limparCampos()
+                Toast.makeText(this, "Produto adicionado com sucesso!", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun validarCampos(name: String, priceText: String): Boolean {
+        if (name.isEmpty()) {
+            binding.editTextProductName.error = "O nome do produto é obrigatório"
+            binding.editTextProductName.requestFocus()
+            return false
+        }
+        if (priceText.isEmpty() || priceText.toDoubleOrNull() == null) {
+            binding.editTextProductPrice.error = "Insira um preço válido"
+            binding.editTextProductPrice.requestFocus()
+            return false
+        }
+        return true
+    }
+
+    private fun limparCampos() {
+        binding.editTextProductName.text?.clear()
+        binding.editTextProductDesc.text?.clear()
+        binding.editTextProductPrice.text?.clear()
+        binding.editTextProductName.requestFocus()
+    }
+
+    private fun executarFluxoAtualizacao(product: Product) {
+        val produtoAtualizado = product.copy(
+            name = "${product.name} (Editado)",
+            price = product.price * 1.10
+        )
+        viewModel.updateProduct(produtoAtualizado)
+        Toast.makeText(this, "Produto atualizado com sucesso!", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun executarFluxoRemocao(product: Product) {
+        viewModel.deleteProduct(product)
+        Toast.makeText(this, "${product.name} removido.", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+}
