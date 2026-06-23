@@ -1,6 +1,7 @@
 package com.seuapp.gestaofit.ui.login
 
 import android.app.Activity
+import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -15,6 +16,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.EditText
 import android.widget.Toast
+import com.seuapp.gestaofit.MainActivity
 import com.seuapp.gestaofit.databinding.ActivityLoginBinding
 
 import com.seuapp.gestaofit.R
@@ -37,7 +39,7 @@ class LOGIN : AppCompatActivity() {
             insets
         }
 
-        val username = binding.username
+        val username: EditText? = binding.username
         val password = binding.password
         val login = binding.login
         val loading = binding.loading
@@ -52,7 +54,7 @@ class LOGIN : AppCompatActivity() {
             login.isEnabled = loginState.isDataValid
 
             if (loginState.usernameError != null) {
-                username.error = getString(loginState.usernameError)
+                username?.error = getString(loginState.usernameError)
             }
             if (loginState.passwordError != null) {
                 password.error = getString(loginState.passwordError)
@@ -69,15 +71,15 @@ class LOGIN : AppCompatActivity() {
             if (loginResult.success != null) {
                 updateUiWithUser(loginResult.success)
             }
-            setResult(Activity.RESULT_OK)
+            setResult(RESULT_OK)
 
             // Após login com sucesso, abre a MainActivity (Dashboard)
-            val intent = android.content.Intent(this, com.seuapp.gestaofit.MainActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         })
 
-        username.afterTextChanged {
+        username!!.afterTextChanged {
             loginViewModel.loginDataChanged(
                 username.text.toString(),
                 password.text.toString()
