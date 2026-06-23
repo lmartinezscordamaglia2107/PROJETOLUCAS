@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Gestão Fit</string>
+
+    <string name="txt_faturamento_mensal">Faturamento Mensal</string>
+    <string name="txt_entradas">Entradas (Mensalidades)</string>
+    <string name="txt_saidas">Saídas (Despesas)</string>
+    <string name="txt_fluxo_caixa">Fluxo de Caixa</string>
+
+    <string name="txt_cadastro_aluno">Cadastrar Novo Aluno</string>
+    <string name="txt_nome_aluno">Nome do Aluno</string>
+    <string name="txt_vencimento">Dia do Vencimento</string>
+    <string name="txt_status_ativo">Ativo</string>
+    <string name="txt_status_inadimplente">Inadimplente</string>
+
+    <string name="btn_salvar">Salvar Registro</string>
+    <string name="btn_cancelar">Cancelar</string>
+    <string name="btn_nova_transacao">Nova Transação</string>
+</resources>

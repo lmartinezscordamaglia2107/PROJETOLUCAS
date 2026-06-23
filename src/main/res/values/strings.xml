@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Gestão Fit</string>
+
+    <string name="txt_faturamento_mensal">Faturamento Mensal</string>
+    <string name="txt_entradas">Entradas (Mensalidades)</string>
+    <string name="txt_saidas">Saídas (Despesas)</string>
+    <string name="txt_fluxo_caixa">Fluxo de Caixa</string>
+
+    <string name="txt_cadastro_aluno">Cadastrar Novo Aluno</string>
+    <string name="txt_nome_aluno">Nome do Aluno</string>
+    <string name="txt_vencimento">Dia do Vencimento</string>
+    <string name="txt_status_ativo">Ativo</string>
+    <string name="txt_status_inadimplente">Inadimplente</string>
+
+    <string name="btn_salvar">Salvar Registro</string>
+    <string name="btn_cancelar">Cancelar</string>
+    <string name="btn_nova_transacao">Nova Transação</string>
+    <string name="title_activity_login">LOGIN</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+</resources>

@@ -1,0 +1,26 @@
+# Gradle files
+.gradle/
+build/
+*/build/
+
+# IntelliJ IDEA files
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Android Studio files
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Local configuration files
+local.properties
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Other
+java_pid*.hprof
+projetoLucas/
