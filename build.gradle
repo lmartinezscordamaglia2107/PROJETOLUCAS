@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace 'com.seuapp.gestaofit'
-    compileSdk 36
+    compileSdk 37
 
     defaultConfig {
         applicationId "com.seuapp.gestaofit"
