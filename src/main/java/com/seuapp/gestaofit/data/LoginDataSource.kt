@@ -1,24 +1,12 @@
 package com.seuapp.gestaofit.data
 
-import com.seuapp.gestaofit.data.model.LoggedInUser
-import java.io.IOException
+sealed class LoginResult<out T> {
 
-/**
- * Class that handles authentication w/ login credentials and retrieves user information.
- */
-class LoginDataSource {
+    data class Success<out T>(
+        val data: T
+    ) : LoginResult<T>()
 
-    fun login(username: String, password: String): Result<LoggedInUser> {
-        try {
-            // TODO: handle loggedInUser authentication
-            val fakeUser = LoggedInUser(java.util.UUID.randomUUID().toString(), "Jane Doe")
-            return Result.Success(fakeUser)
-        } catch (e: Throwable) {
-            return Result.Error(IOException("Error logging in", e))
-        }
-    }
-
-    fun logout() {
-        // TODO: revoke authentication
-    }
+    data class Error(
+        val exception: Exception
+    ) : LoginResult<Nothing>()
 }

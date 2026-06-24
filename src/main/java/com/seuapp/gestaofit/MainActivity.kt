@@ -1,5 +1,6 @@
 package com.seuapp.gestaofit
-
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateListOf
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,7 +23,6 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 import com.seuapp.gestaofit.R
 
-// --- DEFINIÇÕES DE MODELO ---
 enum class TipoTransacao {
     ENTRADA, SAIDA
 }
