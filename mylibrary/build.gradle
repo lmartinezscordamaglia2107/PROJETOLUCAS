@@ -2,12 +2,12 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.plugin.compose'
-    id 'kotlin-kapt'
+    id 'org.jetbrains.kotlin.kapt'
 }
 
 android {
     namespace 'com.seuapp.gestaofit.mylibrary'
-    compileSdk 34
+    compileSdk 37
 
     defaultConfig {
         minSdk 24
